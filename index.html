@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crud Operation Using Js</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+        }
+
+
+        .navbar {
+            background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+        }
+
+        .navbar a:hover {
+            background: #0056b3;
+            border-radius: 5px;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .menu-icon {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .navbar .menu.active {
+                display: flex;
+            }
+
+            .navbar .menu-icon {
+                display: block;
+            }
+        }
+
+        hr {
+            border: 1px solid #c8c8e0;
+            color: #33b5e5;
+            background-color: none;
+            margin: 20px 100px 40px 100px;
+        }
+
+        .footer {
+            background-color: #17092d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        div.gallery {
+            padding: 0px;
+            margin: 20px;
+        }
+
+        div.gallery p:hover {
+
+            color: red;
+        }
+
+        div.gallery p {
+            width: 100%;
+            height: auto;
+            padding: 10px;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-responsive {
+            padding: 0 6px;
+            float: left;
+            width: 24.99999%;
+        }
+
+        @media only screen and (max-width: 700px) {
+            .footer-responsive {
+                width: 49.99999%;
+                margin: 6px 0;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .footer-responsive {
+                width: 100%;
+            }
+        }
+
+
+
+        .menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu li {
+            padding: 8px;
+            margin-bottom: 7px;
+            background-color: #33b5e5;
+            color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+
+        .menu li:hover {
+            background-color: #0099cc;
+        }
+
+
+        #app,
+        .showdata {
+            width: 90%;
+            /* max-width: 500px;*/
+            margin: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        form input,
+        form button,
+        label,
+        textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #dataContainer {
+            margin-top: 20px;
+        }
+
+        .dataItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .dataItem button {
+            margin-left: 10px;
+        }
+
+        .aside {
+            background-color: #33b5e5;
+            padding: 15px;
+            color: #ffffff;
+            text-align: center;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+
+        .col-3 {
+            width: 25%;
+        }
+
+        .col-9 {
+            width: 75%;
+        }
+
+        @media only screen and (max-width: 768px) {
+
+
+            [class*="col-"] {
+                width: 100%;
+            }
+        }
+
+        .gender {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+           
+            /*gap: 5px;*/
+        }
+
+        .gender-label {
+            display: flex;
+            align-items: center;
+            /* gap: 5px;*/
+            
+            border: none;
+        }
+
+        .row::after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+
+        [class*="col-"] {
+            float: left;
+            padding: 15px;
+        }
+
+        .footer2:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">O</div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="menu" id="navbarMenu">
+            <a href="#home">Home</a>
+            <a href="#news">News</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+            <button id="logout" style="border: none; font-weight:bold;">Logout</button>
+
+        </div>
+    </nav>
+
+    <!-- App Content -->
+    <div id="app">
+        <div id="auth">
+            <h2 style="margin-top: 30px;margin-bottom:10px; font-weight:bold;">Register</h2>
+            <form id="registerForm">
+                <input type="text" id="regName" placeholder="Name" required>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <input type="password" id="regPassword" placeholder="Password" required>
+                <button type="submit">Register</button>
+
+            </form>
+
+            <h2 style="margin-top: 30px;margin-bottom:10px; font-weight:bold;">Login</h2>
+            <form id="loginForm">
+
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+
+            </form>
+        </div>
+
+        <div class="row">
+            <div id="crudfunc" class="col-3 menu" style="display: none;">
+                <ul>
+                    <li>Add Details</li>
+                    <li>Update</li>
+                    <li>Delete</li>
+                    <li>View</li>
+                </ul>
+            </div>
+            <div id="profile" style="display: none;" class="col-9">
+                <h2>Profile Form</h2>
+                <form id="profileForm">
+                    <legend>Profile</legend>
+                    <label for="fname">First Name: <input type="text" id="fname" placeholder="First Name"
+                            required /></label>
+                    <label for="lname">Last Name: <input type="text" id="lname" placeholder="Last Name"
+                            required /></label>
+                    <label for="gmail">Email: <input type="email" id="gmail" placeholder="Email" required /></label>
+                    <label for="phoneno">Phone: <input type="tel" id="phoneno" placeholder="Phone" required /></label>
+                    <div class="gender">
+                        <label class="" style=" border: none;">Gender: </label>
+                        <label for="male" class="gender-label"><input type="radio" name="gender" id="male" value="male"
+                                required />
+                            Male</label>
+                        <label for="female" class="gender-label"><input type="radio" name="gender" id="female"
+                                value="female" required />
+                            Female</label>
+                        <label for="other" class="gender-label"><input type="radio" name="gender" id="other"
+                                value="other" required />
+                            Other</label>
+                    </div>
+                    <label for="dob">Date of Birth: <input type="date" id="dob" required /></label>
+                    <label for="address">Address: <textarea id="address" placeholder="Address"
+                            required></textarea></label>
+                    <label for="password">Password: <input type="password" id="password" placeholder="Password"
+                            required /></label>
+                    <label for="img">Profile Pic: <input type="file" id="img" accept="image/*" /></label>
+                    <label for="qualification">Qualification:
+                        <select id="qualification" name="qualification"
+                            style="padding: 5px; margin-left:25px;border-radius: 5px;border: 1px solid #ccc; ">
+                            <option value="undergraduation">Undergraduation</option>
+                            <option value="graduation">Graduate</option>
+                            <option value="postgraduation">Post Graduate</option>
+                            <option value="12th">12th</option>
+                            <option value="10th">10th</option>
+                            <option value="underpostgraduate">Under PostGraduate</option>
+                        </select>
+                    </label>
+                    <label for="file">Resume: <input type="file" id="file" accept=".pdf,.doc,.docx" /></label>
+                    <label><input type="checkbox" id="terms" required /> Accept Terms and Conditions</label>
+                    <div class="submit">
+                        <button type="submit">Submit</button>
+                        <button type="reset">Reset</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="showdata">
+        <button id="showData">Show Data</button>
+
+        <div id="dataContainer"></div>
+    </div>
+
+   <!--<section>
+        <div class="" style="margin-top:20px;text-align:center; grid:row; grid-template-columns:repeat(3,1fr);"></div>" >
+            <div class="">
+                <img src="https://th.bing.com/th/id/R.e1d424c4b9be7009dd57ef4e7d58e343?rik=EZ8NO5x85j Z0Vg&riu=http%3a%2f%2f1.bp.blogspot.com%2f-NGHwBncyA68%2fUiMm_8b2ZUI%2fAAAAAAAAAnA%2f17OGXCKI4zE%2fs1600%2fLogo%2bHTML5.JPG&ehk=rnVe3RUksYQ4LMnsZ6Xxyf3F5lkj3Br1Eu6vOVCkYh0%3d&risl=&pid=ImgRaw&r=0"
+                    class="img-fluid" alt="HTML5 Logo" height="200px">
+            </div>
+            <div class="">
+                <h3 style="text-align: left;">User Reviews</h3>
+                <p style="text-align: left;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod sint ipsam
+                    vitae, nulla voluptatem laboriosam, ullam iste minus suscipit repudiandae officiis! Quibusdam
+                    aspernatur necessitatibus eum voluptatibus ad, perspiciatis aut itaque.</p>
+            </div>
+        </div>
+    </section>-->
+
+    <section class="contact"
+        style="background-color: #fff; padding: 40px; display:flex;justify-content:center; text-align:center; margin-top: 20px; ">
+        <h1>Get in Touch</h1> <br/>
+        <p>Fan? Drop a note</p>
+        <form id="contactForm">
+
+        </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <section class="footer">
+        <hr>
+        <div class="footer-responsive">
+            <div class="gallery">
+                <h2 style="color: #fff;">
+                    About
+                </h2>
+                <p>Our Story</p>
+                <p>Awards</p>
+                <p>Our Team</p>
+                <p>Career</p>
+            </div>
+        </div>
+
+
+        <div class="footer-responsive">
+            <div class="gallery">
+                <h2 style="color: #fff;">
+                    Company
+                </h2>
+                <p>Our Services</p>
+                <p>Clients</p>
+                <p>Contact</p>
+                <p>Press</p>
+            </div>
+        </div>
+
+        <div class="footer-responsive">
+            <div class="gallery">
+                <h2 style="color: #fff;">
+                    Resources
+                </h2>
+                <p>Blog</p>
+                <p>Newsletter</p>
+                <p>Privacy Policy</p>
+            </div>
+        </div>
+
+        <div class="footer-responsive">
+            <div class="gallery">
+               <!--<h2 style="color: red;">Subscribe</h2>--> 
+                <input type="email" placeholder="Enter your email" style="padding: 10px; border-radius:5px;" >
+                <button style="color:#fff; background:red; border:none;font-weight:bold;">Subscribe</button>
+                <p>Get digital marketing updates in your mailbox</p>
+            </div>
+        </div>
+
+        <div class="footer2"></div>
+
+        <p>&copy; 2023 Profile Manager. All rights reserved.</p>
+        <p><a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+    </section>
+
+
+    <script src="/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const authDiv = document.getElementById("auth");
+            const profileDiv = document.getElementById("profile");
+            const cruddiv = document.getElementById("crudfunc");
+            const registerForm = document.getElementById("registerForm");
+            const loginForm = document.getElementById("loginForm");
+            const profileForm = document.getElementById("profileForm");
+            const dataContainer = document.getElementById("dataContainer");
+            const showDataBtn = document.getElementById("showData");
+            const logoutBtn = document.getElementById("logout");
+            const navbarMenu = document.getElementById("navbarMenu");
+
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let currentUser = JSON.parse(localStorage.getItem("currentUser ")) || null;
+
+            const renderData = () => {
+                const userData = currentUser.data || [];
+                dataContainer.innerHTML = "";
+                userData.forEach((item, index) => {
+                    const div = document.createElement("div");
+                    div.className = "dataItem";
+                    div.innerHTML = `
+            <span>
+              Name: ${item.fname} ${item.lname}<br>
+              Email: ${item.email}<br>
+              Phone: ${item.phone}<br>
+              Gender: ${item.gender}<br>
+              Date of Birth: ${item.dob}<br>
+              Address: ${item.address}<br>
+              Qualification: ${item.qualification}<br>
+              Profile Pic: <img src="${item.profilePic}" alt="Profile Picture" style="width:50px;height:50px;"><br>
+              Resume: <a href="${item.resume}" target="_blank">View Resume</a>
+            </span>
+            <div>
+              <button onclick="editData(${index})">Edit</button>
+              <button onclick="deleteData(${index})">Delete</button>
+            </div>
+          `;
+                    dataContainer.appendChild(div);
+                });
+            };
+
+            const showAlert = (message) => alert(message);
+
+            const switchToProfile = () => {
+                authDiv.style.display = "none";
+                profileDiv.style.display = "block";
+                cruddiv.style.display = "block";
+                renderData();
+            };
+
+            const switchToAuth = () => {
+                authDiv.style.display = "block";
+                profileDiv.style.display = "none";
+                cruddiv.style.display = "none";
+            };
+
+            if (currentUser) {
+                switchToProfile();
+            }
+
+            registerForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const name = document.getElementById("regName").value;
+                const email = document.getElementById("regEmail").value;
+                const password = document.getElementById("regPassword").value;
+
+                if (users.find((user) => user.email === email)) {
+                    showAlert("Email already registered!");
+                } else {
+                    users.push({ name, email, password, data: [] });
+                    localStorage.setItem("users", JSON.stringify(users));
+                    showAlert("Registration successful!");
+                }
+            });
+
+            loginForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const email = document.getElementById("loginEmail").value;
+                const password = document.getElementById("loginPassword").value;
+
+                const user = users.find((user) => user.email === email && user.password === password);
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem("currentUser  ", JSON.stringify(currentUser));
+                    switchToProfile();
+                } else {
+                    showAlert("Invalid credentials!");
+                }
+            });
+
+            profileForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const fname = document.getElementById("fname").value;
+                const lname = document.getElementById("lname").value;
+                const email = document.getElementById("gmail").value;
+                const phone = document.getElementById("phoneno").value;
+                const gender = document.querySelector('input[name="gender"]:checked').value;
+                const dob = document.getElementById("dob").value;
+                const address = document.getElementById("address").value;
+                const qualification = document.getElementById("qualification").value;
+                const terms = document.getElementById("terms").checked;
+
+                if (terms) {
+                    const profilePic = document.getElementById("img").files[0];
+                    const resume = document.getElementById("file").files[0];
+
+                    const profilePicUrl = URL.createObjectURL(profilePic);
+                    const resumeUrl = URL.createObjectURL(resume);
+
+                    currentUser.data.push({ fname, lname, email, phone, gender, dob, address, qualification, profilePic: profilePicUrl, resume: resumeUrl });
+                    localStorage.setItem("currentUser  ", JSON.stringify(currentUser));
+
+                    showAlert("Data saved!");
+
+                    renderData();
+                } else {
+                    showAlert("You must agree to the terms!");
+                }
+            });
+
+            showDataBtn.addEventListener("click", () => renderData());
+
+            logoutBtn.addEventListener("click", () => {
+                currentUser = null;
+                localStorage.removeItem("currentUser  ");
+                switchToAuth();
+            });
+
+            window.editData = (index) => {
+                const item = currentUser.data[index];
+                document.getElementById("fname").value = item.fname;
+                document.getElementById("lname").value = item.lname;
+                document.getElementById("gmail").value = item.email;
+                document.getElementById("phoneno").value = item.phone;
+                document.querySelector(`input[name="gender"][value="${item.gender}"]`).checked = true;
+                document.getElementById("dob").value = item.dob;
+                document.getElementById("address").value = item.address;
+                document.getElementById("qualification").value = item.qualification;
+
+                currentUser.data.splice(index, 1);
+
+                localStorage.javascriptStorage.setItem("currentUser",
+                    JSON.stringify(currentUser));
+                renderData();
+            };
+
+            window.deleteData = (index) => {
+                if (confirm("Are you sure you want to delete this?")) {
+                    currentUser.data.splice(index, 1);
+                    localStorage.setItem("currentUser   ", JSON.stringify(currentUser));
+                    renderData();
+                }
+            };
+
+            window.toggleMenu = () => {
+                navbarMenu.classList.toggle("active");
+            };
+        });
+
+    </script>
+</body>
+
+</html>
